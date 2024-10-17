@@ -1,0 +1,4 @@
+{
+  "appService.defaultWebAppToDeploy": "/subscriptions/2043598a-bd0b-467f-84a1-2a0f25a90671/resourceGroups/appsvc_linux_centralus_basic/providers/Microsoft.Web/sites/unityazureconnect",
+  "appService.deploySubpath": "."
+}
