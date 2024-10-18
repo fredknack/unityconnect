@@ -94,6 +94,40 @@ app.delete('/api/users/:id', async (req, res) => {
     }
 });
 
+// DELETE: Remove a user by UserId and delete all associated LearnerData records
+app.delete('/api/deleteUserWithLearnerData/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        await sql.connect(config);
+
+        // Start a transaction to delete both user and learner data
+        const transaction = new sql.Transaction();
+        await transaction.begin();
+
+        // Delete associated LearnerData records for the user
+        await transaction.request().query`
+            DELETE FROM LearnerData WHERE UserId = ${id}
+        `;
+
+        // Delete the user
+        const result = await transaction.request().query`
+            DELETE FROM Learners WHERE UserId = ${id}
+        `;
+
+        if (result.rowsAffected[0] === 0) {
+            await transaction.rollback();
+            return res.status(404).send('User not found');
+        }
+
+        await transaction.commit();
+        res.send('User and associated learner data deleted successfully');
+    } catch (err) {
+        console.error('Error deleting user and learner data:', err);
+        res.status(500).send('Error deleting user and learner data');
+    }
+});
+
+
 // Installations CRUD routes
 
 // GET: Fetch all installations
