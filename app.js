@@ -28,7 +28,7 @@ app.use(express.json());
 
 // Add CORS middleware
 app.use(cors({
-    origin: ['https://kdsar-cms.azurewebsites.net', 'http://localhost:3000'],
+    origin: ['https://kdsar-portal.azurewebsites.net', 'http://localhost:3000'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type'],
 }));
